@@ -134,7 +134,6 @@
         .btn-tuto:active { box-shadow: 0 0 0 #A87114; }
         .btn-controller:active { box-shadow: 0 0 0 #2b6c1d; }
 
-
         .footer {
             margin-top: 1.8rem;
             font-size: 0.8rem;
@@ -145,11 +144,9 @@
 </head>
 <body>
 
-    <!-- Musique de fond -->
-    <audio id="bgm" src="music/Tikolin%20Purre.mp3" loop autoplay></audio>
+    <audio id="bgm" src="/Tikolin%20Purre.mp3" loop autoplay></audio>
 
-    <!-- Fond animé via balise Img -->
-    <img id="bg-anim" src="image/pixil-gif-drawing%20(1).gif" alt="">
+    <img id="bg-anim" src="/pixil-gif-drawing%20(1).gif" alt="">
 
     <div class="container">
         <div class="button-group">
@@ -157,16 +154,13 @@
                 Lancer l'Écran de Jeu
             </a>
             <a href="/tutoriel" class="btn btn-tuto">
-    Tutoriel
-</a>
+                Tutoriel
+            </a>
             <a href="/controller" class="btn btn-controller">
                 Rejoindre une Partie
             </a>
         </div>
     </div>
-
-    <!-- Musique de fond -->
-    <audio id="bgm" src="music/Tikolin%20Purre.mp3" loop autoplay></audio>
 
     <script>
         const bgm = document.getElementById('bgm');
