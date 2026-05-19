@@ -6,23 +6,29 @@ const http = require('http');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
+// 1. Rendre les fichiers généraux accessibles (images, musiques, scripts qui sont à la racine)
+app.use(express.static(__dirname));
 
-app.use('/controller', express.static(path.join(__dirname, 'public/controller')));
+// 2. Gestion de la manette (située dans le dossier controller à la racine)
+app.use('/controller', express.static(path.join(__dirname, 'controller')));
 app.get('/controller', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/controller/index.html'));
+    // Note : On s'assure que le dossier s'appelle bien 'controller' et pas 'public/controller'
+    res.sendFile(path.join(__dirname, 'controller', 'index.html'));
 });
 
-// Servir le dossier Tutoriel
-app.use('/tutoriel', express.static(path.join(__dirname, 'Tutoriel', 'Tutoriel')));
+// 3. Route pour le Tutoriel (qui est maintenant directement à la racine)
+app.get('/tutoriel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'tutoDookey.html'));
+});
 
-app.use('/display', express.static(path.join(__dirname, 'godot')));
+// 4. Route pour l'Écran de Jeu Godot (les fichiers .js/.wasm/images de Godot doivent être à la racine)
 app.get('/display', (req, res) => {
-    res.sendFile(path.join(__dirname, 'godot', 'Dookey Ascension.html'));
+    res.sendFile(path.join(__dirname, 'Dookey Ascension.html'));
 });
 
+// 5. Page d'accueil générale du site
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const server = http.createServer(app);
@@ -215,7 +221,6 @@ wss.on('connection', (ws, req) => {
                     finalMsg += ":" + pseudo;
                 }
                 room.gameWs.send(finalMsg);
-                console.log(`[Serveur] Message reçu dans ${upperCode} mais le jeu n'est plus connecté.`);
             }
         });
 
