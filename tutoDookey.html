@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dookey Ascension - Tutoriel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        /* === VARIABLES & RESET === */
+        :root {
+            --bg-water: #90d3eb; /* Bleu de l'eau de la map */
+            --bg-grass: #38b534; /* Vert de l'herbe */
+            --bg-sand: #f8e58c;  /* Jaune du sable */
+            --border-dark: #2c2c2c;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --accent-red: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--bg-water);
+            color: var(--text-dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Utilitaire pour rendre le pixel art net au redimensionnement */
+        img {
+            image-rendering: pixelated;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* === STRUCTURE === */
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--bg-grass);
+            border-bottom: 8px solid var(--border-dark);
+            color: var(--text-light);
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.5rem; margin-bottom: 1.5rem; text-transform: uppercase; color: var(--bg-sand); }
+        h3 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--border-dark); }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-box {
+            background-color: var(--bg-sand);
+            border: 6px solid var(--border-dark);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+            opacity: 0; /* Pour l'animation GSAP */
+            transform: translateY(30px);
+        }
+
+        p { font-size: 0.8rem; margin-bottom: 1rem; }
+
+        /* === PLACEHOLDERS MEDIAS === */
+        .media-placeholder {
+            background-color: #000;
+            color: #fff;
+            border: 4px dashed #fff;
+            text-align: center;
+            padding: 3rem 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .media-placeholder.map-img {
+            /* Tu mettras ton image de la map ici */
+            background: url('CHEMIN_VERS_image_23a32e.png') center/cover no-repeat;
+            border: 4px solid var(--border-dark);
+        }
+
+        .media-placeholder.chars-img {
+            /* Tu mettras ton image des personnages ici */
+            background: url('CHEMIN_VERS_image_23a632.png') center/contain no-repeat;
+            background-color: transparent;
+            border: none;
+            min-height: 150px;
+        }
+
+        /* === GRILLES === */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .effect-list {
+            list-style: none;
+            font-size: 0.8rem;
+        }
+
+        .effect-list li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid var(--border-dark);
+        }
+
+        .highlight { color: var(--accent-red); font-weight: bold; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DOOKEY ASCENSION</h1>
+        <p>Le chaos ultime pour un hot-dog.</p>
+    </header>
+
+    <div class="container">
+
+        <section class="section-box anim-section">
+            <h2>L'Histoire</h2>
+            <p>Dookey pensait avoir tout vu. Après avoir obtenu son diplôme, il voulait juste enseigner les maths en paix. Mais une lettre mystérieuse l'a conduit sur cette île...</p>
+            <p>Ici, d'anciennes expériences du laboratoire s'affrontent dans de nouvelles épreuves complètement absurdes. Le but ultime de ces scientifiques fous ? Voir qui atteindra le sommet en premier pour remporter le <strong>Certificat Pro Max +</strong>... et surtout, <strong>UN HOT-DOG GRATUIT</strong>.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <h3>Les Dookeys</h3>
+                    <p>4 équipes, 4 personnages prêts à abandonner toute dignité pour gagner. La mauvaise foi est de mise.</p>
+                    <div class="media-placeholder chars-img">
+                        <img src="./DookeyPersos.jpg" alt="DookeyCharacters">
+                        </div>
+                </div>
+                <div>
+                    <h3>Les Invités Surprises</h3>
+                    <p><strong>Dookey Majestueux :</strong> Le premier de sa lignée. Il veut vous aider avec panache (mais refuse le hot-dog).</p>
+                    <img src="./DookeyMajestueux.jpg" alt="DookeyMajestueux">
+                    <p><strong>Dookey Boss :</strong> La pire expérience. Agent du chaos, il veut dominer l'île et manger ce hot-dog pour asseoir sa suprématie.</p>
+                </div>
+                <img src="./DookeyBoss.jpg" alt="DookeyBoss">
+            </div>
+        </section>
+
+        <section class="section-box anim-section">
+            <h2>Comment Jouer ?</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <h3>1. L'Écran principal (Le Plateau)</h3>
+                    <p>Le jeu se déroule sur un plateau de 53 cases affiché sur grand écran. La première équipe à la fin gagne !</p>
+                    <div class="media-placeholder map-img">
+                          <img src="./plateau.png" alt="Plateau">
+                        </div>
+                      
+                </div>
+                
+                <div>
+                    <h3>2. Écran du téléphone (La Manette)</h3>
+                    <p>Chaque équipe contrôle son Dookey. Sur ton écran, une barre rapide défile sur les chiffres de 1 à 6.</p>
+                    <p><strong>Clique au bon moment !</strong> Le déplacement final du personnage sera tiré au sort parmi les choix de toute l'équipe.</p>
+                    
+                    <div class="media-placeholder">
+                       <img src="./barre.gif" alt="BarreDéfilante">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-box anim-section">
+            <h2>Les Cases Spéciales</h2>
+            <p>Le parcours est semé d'embûches. Attention où vous mettez les pieds !</p>
+            
+            <div class="media-placeholder">
+                <img src="./DookeyMalus.gif" alt="DookeyMalus">
+            </div>
+
+            <ul class="effect-list">
+                <li> <strong>BONUS (case bleue) :</strong> L'équipe avance de 3 à 5 cases supplémentaires.</li>
+                <li><strong>MALUS (case rouge):</strong> L'équipe recule de 3 à 5 cases.</li>
+                <li> REJOUER (case verte) : <strong>ÉLIMINATION :</strong> L'équipe peut jouer une deuxième fois</li>
+                <li> ET PLUS ENCORE:  On vous réserve quelques surprises.</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <script>
+        // Animations GSAP pour faire apparaitre les sections en douceur lors du scroll
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin();
+            
+            const sections = document.querySelectorAll('.anim-section');
+            
+            sections.forEach((section, index) => {
+                gsap.to(section, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    delay: index * 0.2,
+                    ease: "power2.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
