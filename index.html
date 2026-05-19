@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dookey Ascension - Menu Principal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: white;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+
+        /* ── Fond animé ── */
+        #bg-anim {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            object-fit: contain; /* Annule le zoom */
+            background-color: #000;
+            /* Anti-flou absolu (multi-navigateurs) */
+            -ms-interpolation-mode: nearest-neighbor;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -o-crisp-edges;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        /* ── Conteneur des Boutons ── */
+        .container {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            z-index: 10;
+            width: 340px;
+            text-align: center;
+            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 📱 Responsive Mobile */
+        @media (max-width: 768px) {
+            .container {
+                position: relative; /* Annule l'ancrage absolu en haut à droite */
+                top: auto;
+                right: auto;
+                width: 85%;
+                animation: slideUpCenter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+            @keyframes slideUpCenter {
+                from { opacity: 0; transform: translateY(30px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: white;
+            padding: 1.1rem 1.2rem;
+            border-radius: 6px;
+            border: 4px solid #332115;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            /* Contour texte noir */
+            text-shadow: 
+                -1px -1px 0 #000, 1px -1px 0 #000, 
+                -1px  1px 0 #000, 1px  1px 0 #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-game {
+            background: #4A90E2; /* Bleu acier RPG */
+            box-shadow: 0 6px 0 #215A9E;
+        }
+
+        .btn-tuto {
+            background: #F5A623; /* Jaune doré RPG */
+            box-shadow: 0 6px 0 #A87114;
+        }
+
+        .btn-controller {
+            background: #5bbd42; /* Vert RPG */
+            box-shadow: 0 6px 0 #2b6c1d;
+        }
+
+        .btn:hover {
+            transform: translateY(2px);
+            filter: brightness(1.1);
+        }
+        .btn-game:hover { box-shadow: 0 4px 0 #215A9E; }
+        .btn-tuto:hover { box-shadow: 0 4px 0 #A87114; }
+        .btn-controller:hover { box-shadow: 0 4px 0 #2b6c1d; }
+
+        .btn:active {
+            transform: translateY(6px);
+            filter: brightness(0.9);
+        }
+        .btn-game:active { box-shadow: 0 0 0 #215A9E; }
+        .btn-tuto:active { box-shadow: 0 0 0 #A87114; }
+        .btn-controller:active { box-shadow: 0 0 0 #2b6c1d; }
+
+
+        .footer {
+            margin-top: 1.8rem;
+            font-size: 0.8rem;
+            color: #8c6a4a;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Musique de fond -->
+    <audio id="bgm" src="music/Tikolin%20Purre.mp3" loop autoplay></audio>
+
+    <!-- Fond animé via balise Img -->
+    <img id="bg-anim" src="image/pixil-gif-drawing%20(1).gif" alt="">
+
+    <div class="container">
+        <div class="button-group">
+            <a href="/display" class="btn btn-game">
+                Lancer l'Écran de Jeu
+            </a>
+            <a href="/tutoriel/tutoDookey.html" class="btn btn-tuto">
+                Tutoriel
+            </a>
+            <a href="/controller" class="btn btn-controller">
+                Rejoindre une Partie
+            </a>
+        </div>
+    </div>
+
+    <!-- Musique de fond -->
+    <audio id="bgm" src="music/Tikolin%20Purre.mp3" loop autoplay></audio>
+
+    <script>
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 0.15;
+
+        let playAttempt = bgm.play();
+
+        if (playAttempt !== undefined) {
+            playAttempt.catch(error => {
+                document.body.addEventListener('click', () => {
+                    bgm.play();
+                }, { once: true });
+            });
+        }
+    </script>
+</body>
+</html>
