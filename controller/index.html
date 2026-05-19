@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manette Dookey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #1a1a1a; font-family: 'Outfit', sans-serif; color: white;}
+        
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 50;
+        }
+        
+        .login-box {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 { margin-top: 0; font-weight: 900; background: linear-gradient(90deg, #ff6584, #6c63ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        
+        .input-group { margin-bottom: 1.5rem; text-align: left; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #94a3b8; font-weight: 700;}
+        
+        input {
+            width: 100%; padding: 12px;
+            border-radius: 8px; border: none;
+            background: rgba(15, 23, 42, 0.8);
+            color: white; font-size: 1.2rem;
+            text-align: center;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+        input:focus { border: 2px solid #6c63ff; }
+        
+        .btn-join {
+            width: 100%; padding: 14px;
+            border-radius: 8px; border: none;
+            background: #6c63ff;
+            color: white; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-join:active { transform: scale(0.95); }
+
+        #game-screen { display: none; height: 100vh; overflow: hidden; }
+        #ws-status-bar {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.6); padding: 5px 10px;
+            border-radius: 10px; font-size: 12px; color: white;
+            display: flex; align-items: center; z-index: 10;
+        }
+        #ws-status { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; margin-right: 8px; }
+
+        #badge-equipe {
+            position: absolute; top: 10px; right: 10px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px; font-weight: 900;
+            color: white;
+            display: none;
+            z-index: 10;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+		#team-banner {
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			width: 100%;
+			padding: 30px 20px;
+			text-align: center;
+			font-size: 1.6rem;
+			font-weight: 900;
+			color: white;
+			letter-spacing: 2px;
+			text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+			border-top: 3px solid rgba(255,255,255,0.25);
+			border-bottom: 3px solid rgba(255,255,255,0.25);
+			box-shadow: 0 6px 30px rgba(0,0,0,0.4);
+			z-index: 100;
+		}
+		#boss-vote-screen {
+			display: none;
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: rgba(5,0,15,0.92);
+			z-index: 300;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 18px;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+		#boss-vote-screen h2 {
+			margin: 0;
+			font-size: 1.4rem;
+			color: #d966ff;
+			text-shadow: 0 0 12px #a020f0;
+			letter-spacing: 2px;
+		}
+		.boss-card {
+			width: 100%;
+			max-width: 340px;
+			padding: 18px;
+			border-radius: 16px;
+			border: 2px solid rgba(255,255,255,0.2);
+			text-align: center;
+			cursor: pointer;
+			transition: transform 0.15s, border-color 0.2s;
+			box-sizing: border-box;
+		}
+		.boss-card:active { transform: scale(0.96); }
+		.boss-card h3 { margin: 0 0 6px; font-size: 1.1rem; color: white; }
+		.boss-card p  { margin: 0; font-size: 0.85rem; color: #aaa; }
+		.boss-card.voted { border-color: #2ecc71; box-shadow: 0 0 14px #2ecc71; }
+		.boss-card.winner { background: rgba(46,204,113,0.25); border-color: #2ecc71; }
+		.boss-card.loser  { opacity: 0.4; }
+		#boss-vote-status { font-size: 0.9rem; color: #888; margin: 0; }
+
+		#majestueux-vote-screen {
+			display: none;
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: rgba(10,20,30,0.92);
+			z-index: 300;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 18px;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+		#majestueux-vote-screen h2 {
+			margin: 0;
+			font-size: 1.4rem;
+			color: #4dc3ff;
+			text-shadow: 0 0 12px #0088cc;
+			letter-spacing: 2px;
+			text-align: center;
+		}
+		.maj-cards-container {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			width: 100%;
+			align-items: center;
+			overflow-y: auto;
+			max-height: 70vh;
+		}
+		.maj-card {
+			width: 100%;
+			max-width: 340px;
+			padding: 16px;
+			border-radius: 16px;
+			border: 2px solid rgba(255,255,255,0.2);
+			background: rgba(0,60,100,0.7);
+			text-align: center;
+			cursor: pointer;
+			transition: transform 0.15s, border-color 0.2s;
+			box-sizing: border-box;
+		}
+		.maj-card:active { transform: scale(0.96); }
+		.maj-card h3 { margin: 0 0 6px; font-size: 1.1rem; color: white; }
+		.maj-card p  { margin: 0; font-size: 0.85rem; color: #bbeecc; }
+		.maj-card.voted { border-color: #f1c40f; box-shadow: 0 0 14px #f1c40f; }
+		.maj-card.winner { background: rgba(241,196,15,0.3); border-color: #f1c40f; }
+		.maj-card.loser  { opacity: 0.4; }
+		#maj-vote-status { font-size: 0.9rem; color: #888; margin: 0; }
+
+		#eliminated-screen {
+			display: none;
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: radial-gradient(circle, #2a0505 0%, #000 100%);
+			z-index: 1000;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			padding: 40px;
+			box-sizing: border-box;
+		}
+		#eliminated-screen h1 {
+			font-size: 3rem;
+			color: #ff3333;
+			margin: 0;
+			text-shadow: 0 0 20px rgba(255,0,0,0.6);
+			font-weight: 900;
+		}
+		#eliminated-screen p {
+			font-size: 1.2rem;
+			color: #ccc;
+			margin-top: 20px;
+		}
+		.skull-icon {
+			font-size: 6rem;
+			margin-bottom: 20px;
+			filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+		}
+
+
+		#portail-screen {
+			display: none;
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: radial-gradient(circle, #2a0a2a 0%, #110011 100%);
+			z-index: 400;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+		#portail-screen h2 {
+			font-size: 2rem;
+			color: #d881fc;
+			margin: 0;
+			text-shadow: 0 0 15px #ba55d3;
+		}
+		#portail-screen p {
+			font-size: 1.1rem;
+			color: #ccc;
+			margin-top: 10px;
+			margin-bottom: 30px;
+		}
+		.qte-container {
+			width: 90%;
+			max-width: 400px;
+			height: 50px;
+			background: #333;
+			border: 3px solid #555;
+			border-radius: 25px;
+			position: relative;
+			overflow: hidden;
+			box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+		}
+		.qte-safe-zone {
+			position: absolute;
+			left: 47.5%; /* Centré : (100-5)/2 */
+			width: 5%; /* Difficulté extrême */
+			height: 100%;
+			background: rgba(0, 255, 0, 0.4);
+			border-left: 2px solid #0f0;
+			border-right: 2px solid #0f0;
+			box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) inset;
+		}
+		.qte-cursor {
+			position: absolute;
+			left: 0%;
+			top: -2px;
+			width: 6px;
+			height: 54px;
+			background: #fff;
+			box-shadow: 0 0 12px #fff, 0 0 15px #ff0055;
+		}
+		.portail-flash {
+			position: absolute;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			z-index: 401;
+			pointer-events: none;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+		#portail-timer {
+			font-size: 3rem;
+			color: #fff;
+			font-weight: 800;
+			margin: 10px 0;
+			text-shadow: 0 0 15px #ba55d3;
+		}
+		#victoire-screen {
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: radial-gradient(circle, #ffd700, #b8860b);
+			display: none;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 2000;
+			text-align: center;
+			padding: 20px;
+		}
+		#victoire-screen h1 {
+			font-size: 3.5rem;
+			color: #fff;
+			margin-bottom: 20px;
+			text-shadow: 0 0 20px rgba(0,0,0,0.5);
+			animation: bounce 1s infinite alternate;
+		}
+		#victoire-screen #gagnant-nom {
+			font-size: 2.2rem;
+			color: #fff;
+			font-weight: 800;
+			background: rgba(0,0,0,0.3);
+			padding: 15px 30px;
+			border-radius: 50px;
+			margin-bottom: 20px;
+		}
+		@keyframes bounce {
+			from { transform: translateY(0); }
+			to { transform: translateY(-20px); }
+		}
+
+	</style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1>Rejoindre</h1>
+            <div class="input-group">
+                <label>Code de la Salle :</label>
+                <input type="text" id="input-code" placeholder="EX: A7B2Z9X1" maxlength="8" style="text-transform: uppercase;">
+            </div>
+            <div class="input-group">
+                <label>Votre Pseudo :</label>
+                <input type="text" id="input-pseudo" placeholder="Ex: Bob" maxlength="12">
+            </div>
+            <button id="btn-join" class="btn-join">Se Connecter</button>
+            <p id="login-error" style="color: #ff6584; font-size: 0.9rem; margin-top: 10px; display: none;"></p>
+        </div>
+    </div>
+
+    <div id="game-screen">
+        <div id="team-banner"></div>
+        
+        <div id="ws-status-bar">
+            <span id="ws-status"></span>
+            <span id="ws-label">En attente...</span>
+        </div>
+        
+        <div id="badge-equipe"></div>
+        
+        <div id="ecran-cliquable">
+            <h2 id="nom-equipe-tour">En attente du jeu...</h2>
+            
+            <div id="container-barre">
+                <div id="curseur"></div>
+                <div class="case-score">X</div>
+                <div class="case-score">X</div>
+                <div class="case-score">X</div>
+                <div class="case-score">X</div>
+                <div class="case-score">X</div>
+                <div class="case-score">X</div>
+            </div>
+            
+            <p id="txt-info">Regardez l'écran principal</p>
+        </div>
+
+        <div id="boss-vote-screen">
+            <h2>☠️ DOOKEY BOSS ! ☠️</h2>
+            <div id="boss-card-0" class="boss-card" style="background:rgba(100,0,0,0.9); border-color: rgba(255,0,0,0.4);" onclick="voterBoss(0)">
+                <h3>Reculer de 10 cases</h3>
+                <p>Le pion recule de 10 cases en arrière</p>
+            </div>
+            <div id="boss-card-1" class="boss-card" style="background:rgba(100,0,0,0.9); border-color: rgba(255,0,0,0.4);" onclick="voterBoss(1)">
+                <h3>Perdre 10% de l'équipe</h3>
+                <p>10% des joueurs de l'équipe sont éliminés du vote</p>
+            </div>
+            <p id="boss-vote-status">Touchez une option pour voter...</p>
+        </div>
+
+        <div id="majestueux-vote-screen">
+            <h2 id="maj-title">👑 DOOKEY MAJESTUEUX 👑</h2>
+            <div id="maj-cards-container" class="maj-cards-container">
+				<!-- Injected by JS -->
+            </div>
+            <p id="maj-vote-status">Touchez une option pour voter...</p>
+        </div>
+
+		<div id="eliminated-screen">
+			<div class="skull-icon">☠️</div>
+			<h1>DOMMAGE !</h1>
+			<p>Dookey Boss vous a éliminé de l'équipe.<br>Vous ne pouvez plus participer aux votes.</p>
+		</div>
+
+		<div id="portail-screen">
+			<div id="portail-flash" class="portail-flash"></div>
+			<h2>ÉPREUVE DU PORTAIL</h2>
+			<div id="portail-timer">8</div>
+			<p>Appuyez sur l'écran quand le curseur est dans la zone verte !</p>
+			<div id="qte-container" class="qte-container">
+				<div id="qte-safe-zone" class="qte-safe-zone"></div>
+				<div id="qte-cursor" class="qte-cursor"></div>
+			</div>
+			<p id="portail-status" style="margin-top: 25px; font-weight: bold; font-size: 1.2rem;"></p>
+		</div>
+
+		<div id="victoire-screen">
+			<h1>🏆 VICTOIRE 🏆</h1>
+			<div id="gagnant-nom">NOM DE L'EQUIPE</div>
+			<p style="color: white; font-size: 1.2rem;">Félicitations ! Retour au menu dans quelques instants...</p>
+		</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
