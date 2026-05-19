@@ -1,0 +1,13 @@
+{
+  "name": "dookey-render-server",
+  "version": "1.0.0",
+  "description": "Node.js WebSocket Server for Dookey Ascension Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0"
+  }
+}
