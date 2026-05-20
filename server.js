@@ -4,7 +4,13 @@ const path = require('path');
 const http = require('http');
 
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 3000;
+
+
+app.use(cors({
+    origin: "https://ton-pseudo.github.io" 
+}));
 
 // 1. Rendre les fichiers généraux accessibles (images, musiques, scripts qui sont à la racine)
 app.use(express.static(__dirname));
