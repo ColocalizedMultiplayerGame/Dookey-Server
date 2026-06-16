@@ -7,9 +7,9 @@ const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 3000;
 
-
+// CORRECTION : Remplacement par l'URL exacte de ton projet GitHub Pages
 app.use(cors({
-    origin: "https://ton-pseudo.github.io" 
+    origin: "https://colocalizedmultiplayergame.github.io" 
 }));
 
 // 1. Rendre les fichiers généraux accessibles (images, musiques, scripts qui sont à la racine)
