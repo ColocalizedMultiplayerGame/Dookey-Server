@@ -108,8 +108,8 @@ if (globSavedCode && globSavedPseudo && !codeParam) {
 }
 
 function initWebSocket(code, pseudo) {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socketUrl = `${protocol}//${window.location.host}?clientType=controller&roomCode=${code}&pseudo=${encodeURIComponent(pseudo)}`;
+    // CORRECTION : Forcer la connexion directe sur l'adresse du nouveau serveur Render
+    const socketUrl = `wss://dookey-server-tvuu.onrender.com/?clientType=controller&roomCode=${code}&pseudo=${encodeURIComponent(pseudo)}`;
     socket = new WebSocket(socketUrl);
 
     socket.onclose = () => {
